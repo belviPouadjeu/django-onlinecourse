@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
-from django.views.generic import RedirectView
+from onlinecourse import views
+
+app_name = 'onlinecourse'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('onlinecourse/', include('onlinecourse.urls')),
-    
-    # Redirect the root URL '/' to '/onlinecourse/'
-    path('', RedirectView.as_view(url='/onlinecourse/', permanent=False)),
+
+    # Directly serve the popular courses at root URL
+    path('', views.CourseListView.as_view(), name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
